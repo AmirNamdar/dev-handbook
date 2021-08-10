@@ -1,0 +1,20 @@
+secrets:
+  psql-pw:
+    file: /Users/amirnamdar/GitRepos/dev-handbook/src/docker/swarm/full-app-lifecycle-with-compose-and-swarm/psql-fake-password.txt
+services:
+  drupal:
+    build:
+      context: /Users/amirnamdar/GitRepos/dev-handbook/src/docker/swarm/full-app-lifecycle-with-compose-and-swarm
+    image: custom-drupal
+    ports:
+      - 80:80
+  postgres:
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/psql-pw
+    image: postgres:12.1
+    secrets:
+    - source: psql-pw
+    volumes:
+    - /Users/amirnamdar/GitRepos/dev-handbook/src/docker/swarm/full-app-lifecycle-with-compose-and-swarm/sample-data:/var/lib/postgresql/data:rw
+version: '3.1'
+
